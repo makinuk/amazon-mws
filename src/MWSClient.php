@@ -3,6 +3,7 @@ namespace Makinuk\AmazonMws;
 
 use DateTime;
 use Exception;
+use League\Csv\AbstractCsv;
 use League\Csv\Reader;
 use League\Csv\Writer;
 use SplTempFileObject;
@@ -1081,14 +1082,14 @@ class MWSClient{
     /**
      * Get a report's content
      * @param string $ReportId
-     * @return array on succes
+     * @return AbstractCsv|string on succes
      */
     public function GetReport($ReportId)
     {
         $status = $this->GetReportRequestStatus($ReportId);
 
         if ($status !== false && $status['ReportProcessingStatus'] === '_DONE_NO_DATA_') {
-            return [];
+            return null;
         } else if ($status !== false && $status['ReportProcessingStatus'] === '_DONE_') {
 
             $result = $this->request('GetReport', [
@@ -1096,19 +1097,13 @@ class MWSClient{
             ]);
 
             if (is_string($result)) {
-                $csv = Reader::createFromString($result);
-                $csv->setDelimiter("\t");
-                $headers = $csv->fetchOne();
-                $result = [];
-                foreach ($csv->setOffset(1)->fetchAll() as $row) {
-                    $result[] = array_combine($headers, $row);
-                }
+                return Reader::createFromString($result);
             }
 
             return $result;
 
         } else {
-            return false;
+            return null;
         }
     }
 
