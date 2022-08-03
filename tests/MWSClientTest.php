@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 
+use Makinuk\AmazonMws\MWSClient;
 use PHPUnit\Framework\TestCase;
 
 final class MWSClientTest extends TestCase {
@@ -13,7 +14,7 @@ final class MWSClientTest extends TestCase {
   ];
 
   public function testValidateCredentialsOnWrongCredentials(): void {
-    $stub = $this->getMockBuilder(\MCS\MWSClient::class)
+    $stub = $this->getMockBuilder(MWSClient::class)
       ->disableOriginalConstructor()
       ->setMethods(['ListOrderItems'])
       ->getMock();
@@ -25,7 +26,7 @@ final class MWSClientTest extends TestCase {
   }
 
   public function testValidateCredentialsOnRightCredentials(): void {
-    $stub = $this->getMockBuilder(\MCS\MWSClient::class)
+    $stub = $this->getMockBuilder(MWSClient::class)
       ->disableOriginalConstructor()
       ->setMethods(['ListOrderItems'])
       ->getMock();

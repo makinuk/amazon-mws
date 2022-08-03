@@ -1,5 +1,5 @@
-<?php 
-namespace MCS;
+<?php
+namespace Makinuk\AmazonMws;
 
 use Exception;
 
